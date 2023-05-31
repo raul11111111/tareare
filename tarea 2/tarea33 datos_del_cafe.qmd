@@ -1,0 +1,170 @@
+---
+title: "Tarea 3 expreciones de datos de cafe"
+format: 
+  html:
+    toc: true
+    lang: es
+---
+
+```{r}
+#| label: bibliotecas
+
+library(tidyverse)
+library(plotly)
+library(DT)
+library(gapminder)
+library(ggthemes)
+library(readr)
+library(ggplot2)
+library(dplyr)
+```
+
+## Introducción
+
+Este documento tiene como proposito expresar datos tanto de catación como de cultivo de varias muestras de café proporcionado por <https://github.com/gf0604-procesamientodatosgeograficos/2023-i/blob/main/datos/cqi/coffee-quality.csv>. Esto se representara mediante varios gráficos para poder entender y visualizar caracteristicas del café.
+
+```{r}
+#| label: data
+
+file.choose()
+```
+
+```{r}
+#| label: data
+
+cafee=read.csv("C:\\Users\\rau7n\\Documents\\tarea 2\\coffee-quality.csv")
+```
+
+
+
+##Grafico de disperción de total de valoración con la altitud
+
+
+
+```{r}
+#| label: coffee-valor
+#| warning: false
+
+cafee <-
+  coffee |>
+  ggplot(aes(x = Altitude, y = Total_Cup_Points)) +
+  geom_point(size = 2) +
+   geom_smooth(method = "lm", se = FALSE) +
+  ggtitle("Puntos de valoración dependiendo de la altura") +
+  xlab("Altitud") +
+  ylab("Total de puntos obtenidos") +
+  theme_economist()
+
+ggplotly(cafee, tooltip = "text") |> 
+  config(locale = 'es')
+ 
+  
+
+```
+
+
+
+
+
+```{r}
+#| label: cajas
+#| warning: false
+
+
+cafee <-
+  coffee |>
+  ggplot(aes(x = Color, y = Total_Cup_Points)) +
+  geom_boxplot() +
+   ggtitle("Mediana y valores del café dependiendo del color") +
+    xlab("Color") +
+  ylab("Puntaje Total") +
+  theme_economist()
+
+# Gráfico de caja plotly
+ggplotly(cafee) |> 
+  config(locale = 'es')
+```
+
+
+
+
+
+```{r}
+#| label: coffee-valor
+#| warning: false
+
+cafee <-
+  coffee |>
+  ggplot(aes(x = Total_Cup_Points)) +
+  geom_histogram(
+    aes(
+      text = paste0(
+        "Distribución de la variable totalde puntaje: $", round(after_stat(x), 2), "\n",
+        "Frecuencia: ", after_stat(count)
+      ),
+      y = after_stat(density)
+        
+    ), 
+    bins = 10
+  ) + 
+  geom_density() +
+   scale_y_continuous(labels = scales::label_comma()) +
+  ggtitle("Distribución de la variable totalde puntaje") +
+  xlab("Puntaje total)") +
+  ylab("Frecuencia") +
+  theme_economist()
+
+ggplotly(cafee, tooltip = "text") |> 
+  config(locale = 'es')
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
